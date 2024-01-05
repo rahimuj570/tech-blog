@@ -18,33 +18,33 @@
 				<div class="card text-primary" data-bs-theme="dark">
 					<div class="card-header">Registration</div>
 					<div class="card_body">
-						<form class="row g-3 p-5">
+						<form class="row g-3 p-5" action="RegisterServlet" method="post">
 							<div class="col-md-6">
-								<label for="inputEmail4" class="form-label">Email</label> <input
+								<label for="inputEmail4" class="form-label">Email</label> <input name="email"
 									type="email" class="form-control" id="inputEmail4">
 							</div>
 							<div class="col-md-6">
 								<label for="inputPassword4" class="form-label">Password</label>
-								<input type="password" class="form-control" id="inputPassword4">
+								<input name="password" type="password" class="form-control" id="inputPassword4">
 							</div>
 							<div class="col-6">
-								<label for="inputAddress" class="form-label">Name</label> <input
+								<label for="inputAddress" class="form-label">Name</label> <input name="name"
 									type="text" class="form-control" id="inputAddress">
 							</div>
 							<div class="col-6">
-								<label for="about" class="form-label">About Me</label> <textarea
+								<label for="about" class="form-label">About Me</label> <textarea name="about"
 									type="text" class="form-control" id="inputAddress"></textarea>
 							</div>
 
 							<div class="form-check">
 								<input class="form-check-input" type="radio"
-									name="exampleRadios" id="gender" value="male"
+									name="gender" id="gender" value="male"
 									checked> <label class="form-check-label"
 									for="exampleRadios1"> Male </label>
 							</div>
 							<div class="form-check">
 								<input class="form-check-input" type="radio"
-									name="exampleRadios" id="gender" value="female">
+									name="gender" id="gender" value="female">
 								<label class="form-check-label" for="exampleRadios2">
 									Female </label>
 							</div>
