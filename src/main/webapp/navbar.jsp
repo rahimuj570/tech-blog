@@ -24,10 +24,9 @@
 					</ul></li>
 				<li class="nav-item"><a class="nav-link" href="#">Contact
 						Us</a></li>
-				<li class="nav-item"><a class="nav-link" href="/login.jsp">Log in</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Register</a></li>
-				<li class="nav-item"><a class="nav-link disabled"
-					aria-disabled="true">Disabled</a></li>
+				<li class="nav-item"><a class="nav-link" href="login.jsp">Log in</a></li>
+				<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a></li>
+				<li class="nav-item"><a class="nav-link " href="profile.jsp">Profile</a></li>
 			</ul>
 			<form class="d-flex" role="search">
 				<input class="form-control me-2" type="search" placeholder="Search"

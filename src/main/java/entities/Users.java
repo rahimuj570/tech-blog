@@ -1,6 +1,5 @@
 package entities;
 
-import java.security.Timestamp;
 
 public class Users {
 
@@ -10,19 +9,29 @@ public class Users {
 	private String user_password;
 	private String user_about;
 	private String user_gender;
-	private Timestamp registration_date;
+	private java.sql.Timestamp registration_date;
+	private String user_dp;
+
+	public String getUser_dp() {
+		return user_dp;
+	}
+
+	public void setUser_dp(String user_dp) {
+		this.user_dp = user_dp;
+	}
 
 	public Users() {
 		super();
 	}
 
-	public Users(String user_name, String user_email, String user_password, String user_about, String user_gender) {
+	public Users(String user_name, String user_email, String user_password, String user_about, String user_gender,String user_dp) {
 		super();
 		this.user_name = user_name;
 		this.user_email = user_email;
 		this.user_password = user_password;
 		this.user_about = user_about;
 		this.user_gender = user_gender;
+		this.user_dp=user_dp;
 	}
 
 	public int getUser_id() {
@@ -73,12 +82,12 @@ public class Users {
 		this.user_gender = user_gender;
 	}
 
-	public Timestamp getRegistration_date() {
+	public java.sql.Timestamp getRegistration_date() {
 		return registration_date;
 	}
 
-	public void setRegistration_date(Timestamp registration_date) {
-		this.registration_date = registration_date;
+	public void setRegistration_date(java.sql.Timestamp timestamp) {
+		this.registration_date = timestamp;
 	}
 
 }
