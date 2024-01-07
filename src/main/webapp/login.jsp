@@ -2,6 +2,9 @@
 <%@page import="dao.UsersDao"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<% if(session.getAttribute("current_user")!=null){
+	response.sendRedirect("/TechBlog");
+}; %>
 <!DOCTYPE html>
 <html>
 <head>

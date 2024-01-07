@@ -1,4 +1,5 @@
-
+<%@page import="entities.Users"%>
+<% Users u2= (Users)session.getAttribute("current_user"); %>
 <nav class="navbar navbar-expand-lg bg-body-tertiary"
 	data-bs-theme="dark">
 	<div class="container-fluid">
@@ -24,9 +25,13 @@
 					</ul></li>
 				<li class="nav-item"><a class="nav-link" href="#">Contact
 						Us</a></li>
-				<li class="nav-item"><a class="nav-link" href="login.jsp">Log in</a></li>
-				<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a></li>
-				<li class="nav-item"><a class="nav-link " href="profile.jsp">Profile</a></li>
+				<%if(u2==null){
+					out.print("<li class=\"nav-item\"><a class=\"nav-link\" href=\"login.jsp\">Log in</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"register.jsp\">Register</a></li>");
+					
+				}else{
+					out.print("<li class=\"nav-item\"><a class=\"nav-link \" href=\"profile.jsp\">Profile</a></li><li class=\"nav-item\"><a class=\"nav-link \" href=\"LogoutServlet\">Log Out</a></li>");
+				} %>
+				
 			</ul>
 			<form class="d-flex" role="search">
 				<input class="form-control me-2" type="search" placeholder="Search"
