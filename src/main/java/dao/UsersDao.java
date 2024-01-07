@@ -37,14 +37,14 @@ public class UsersDao {
 
 	public Users get_user(String email, String password) {
 		Users user = null;
-		String query="select * from users where user_email=? and user_password=?";
+		String query = "select * from users where user_email=? and user_password=?";
 		try {
-			PreparedStatement pst= con.prepareStatement(query);
+			PreparedStatement pst = con.prepareStatement(query);
 			pst.setString(1, email);
 			pst.setString(2, password);
-			ResultSet res=pst.executeQuery();
-			if(res.next()) {
-				user=new Users();
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				user = new Users();
 				try {
 					user.setUser_name(res.getString("user_name"));
 					user.setUser_email(res.getString("user_email"));
@@ -53,7 +53,7 @@ public class UsersDao {
 					user.setUser_gender(res.getString("user_gender"));
 					user.setUser_id(res.getInt("user_id"));
 					user.setUser_dp(res.getString("user_dp"));
-				}catch(Exception e){
+				} catch (Exception e) {
 					System.out.println(e);
 				}
 			}
@@ -61,6 +61,26 @@ public class UsersDao {
 			System.out.println(e);
 		}
 		return user;
+	}
+
+	public boolean edit_user(Users u) {
+		boolean f = false;
+		String query = "update users set user_name=? ,user_email=?,user_password=?,user_about=?,user_dp=? where user_id=?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, u.getUser_name());
+			pst.setString(2, u.getUser_email());
+			pst.setString(3, u.getUser_password());
+			pst.setString(4, u.getUser_about());
+			pst.setString(5, u.getUser_dp());
+			pst.setInt(6, u.getUser_id());
+			pst.executeUpdate();
+			f = true;
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+		return f;
 	}
 
 }
