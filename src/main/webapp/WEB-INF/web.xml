@@ -49,4 +49,14 @@
     <servlet-name>EditUserServlet</servlet-name>
     <url-pattern>/EditUserServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddBlogServlet</display-name>
+    <servlet-name>AddBlogServlet</servlet-name>
+    <servlet-class>servlets.AddBlogServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddBlogServlet</servlet-name>
+    <url-pattern>/AddBlogServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

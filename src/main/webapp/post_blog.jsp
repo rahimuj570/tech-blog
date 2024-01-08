@@ -1,4 +1,8 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="helper.ConnectionProvider"%>
+<%@page import="dao.CategoriesDao"%>
 <%@page import="entities.Users"%>
+<%@page import="entities.Categories"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
@@ -28,30 +32,41 @@ Users u = (Users) request.getAttribute("current_user");
 				<div class="card text-primary" data-bs-theme="dark">
 					<div class="card-header">Registration</div>
 					<div class="card_body">
-						<form class="row g-3 p-5" action="RegisterServlet" method="post"
+						<form class="row g-3 p-5" action="AddBlogServlet" method="post"
 							id="reg_form">
 							<div class="col-md-6">
 								<label for="inputEmail4" class="form-label">Title</label> <input
-									name="title" type="text" class="form-control" id="inputEmail4">
+									required name="title" type="text" class="form-control"
+									id="inputEmail4">
 							</div>
 							<div class="col-md-6">
 								<label for="about" class="form-label">Content</label>
-								<textarea name="content" type="text" class="form-control"
-									id="inputAddress"></textarea>
+								<textarea required name="content" type="text"
+									class="form-control" id="inputAddress"></textarea>
 							</div>
 							<div class="col-md-6">
-								<select name="category" class="form-select" aria-label="Default select example">
+								<select name="category" class="form-select"
+									aria-label="Default select example">
 									<option selected>Select Category</option>
-									<option value="1">One</option>
-									<option value="2">Two</option>
-									<option value="3">Three</option>
+
+									<%
+									CategoriesDao catsDao = new CategoriesDao(ConnectionProvider.main());
+									ArrayList<Categories> cats = catsDao.getAllCategories();
+									for (Categories i : cats) {
+									%>
+									<option value="<%=i.getCategory_id()%>">
+										<%=i.getCategory_name()%></option>
+									<%
+									}
+									%>
 								</select>
 							</div>
 
 							<div class="form-check form-switch">
 								<input name="check_box" class="form-check-input" value="yes"
 									type="checkbox" id="check_box"> <label
-									class="form-check-label" for="flexSwitchCheckDefault">Allow Comment.</label>
+									class="form-check-label" for="flexSwitchCheckDefault">Allow
+									Comment.</label>
 							</div>
 
 							<div class="col-12">
