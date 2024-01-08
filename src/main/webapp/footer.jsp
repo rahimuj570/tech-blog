@@ -66,7 +66,7 @@ document.getElementById("login_form").addEventListener("submit",(e)=>{
 			.add('d-none');
 			if(this.status==200 && this.responseText==="user found"){
 				alert("Successfully Signin")
-				history.go(-1);
+				location="/TechBlog"
 			}else{
 				alert(this.responseText)
 			}
