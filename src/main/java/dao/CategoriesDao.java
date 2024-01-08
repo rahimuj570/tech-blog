@@ -23,8 +23,8 @@ public class CategoriesDao {
 			PreparedStatement pst = con.prepareStatement(query);
 			ResultSet res = pst.executeQuery();
 
-			Categories cat = new Categories();
 			while (res.next()) {
+				Categories cat = new Categories();
 				cat.setCategory_name(res.getString("category_name"));
 				cat.setCategory_id(res.getInt("category_id"));
 				cats.add(cat);

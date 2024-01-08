@@ -30,7 +30,7 @@ Users u = (Users) request.getAttribute("current_user");
 			<div class="col">
 
 				<div class="card text-primary" data-bs-theme="dark">
-					<div class="card-header">Registration</div>
+					<div class="card-header">Create Post</div>
 					<div class="card_body">
 						<form class="row g-3 p-5" action="AddBlogServlet" method="post"
 							id="reg_form">
