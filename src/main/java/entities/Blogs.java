@@ -9,7 +9,7 @@ public class Blogs {
 	private int blog_category;
 	private int blog_author;
 	private Timestamp blog_date;
-	private int blog_comment_status;
+	private String blog_comment_status;
 
 	public int getBlog_id() {
 		return blog_id;
@@ -59,16 +59,16 @@ public class Blogs {
 		this.blog_date = blog_date;
 	}
 
-	public int getBlog_comment_status() {
+	public String getBlog_comment_status() {
 		return blog_comment_status;
 	}
 
-	public void setBlog_comment_status(int blog_comment_status) {
+	public void setBlog_comment_status(String blog_comment_status) {
 		this.blog_comment_status = blog_comment_status;
 	}
 
 	public Blogs(String blog_title, String blog_content, int blog_category, int blog_author, Timestamp blog_date,
-			int blog_comment_status) {
+			String blog_comment_status) {
 		super();
 		this.blog_title = blog_title;
 		this.blog_content = blog_content;
@@ -79,7 +79,7 @@ public class Blogs {
 	}
 
 	public Blogs(int blog_id, String blog_title, String blog_content, int blog_category, int blog_author,
-			Timestamp blog_date, int blog_comment_status) {
+			Timestamp blog_date, String blog_comment_status) {
 		super();
 		this.blog_id = blog_id;
 		this.blog_title = blog_title;

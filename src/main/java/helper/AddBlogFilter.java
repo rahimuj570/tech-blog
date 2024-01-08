@@ -44,10 +44,9 @@ public class AddBlogFilter extends HttpFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String category = req.getParameter("category");
 		if (!category.equals("0")) {
-			System.out.println(category);
 			chain.doFilter(request, response);
 		} else {
-			HttpServletResponse res=(HttpServletResponse) response;
+			HttpServletResponse res = (HttpServletResponse) response;
 			res.getWriter().append("Must Select A Category.");
 		}
 	}

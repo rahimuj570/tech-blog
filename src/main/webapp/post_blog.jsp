@@ -99,10 +99,16 @@ document.getElementById("post_form").addEventListener("submit",(e)=>{
 			if(this.status===200){
 				if(this.responseText==="Must Select A Category."){
 					alert("Must Select A Category.");
+				}else{
+				if(this.responseText=="1"){
+					alert("Successfully Post");
+				}else{
+					alert("Something Went Wrong!")
+				}
 				}
 				console.log("yessssssss");
 			}else{
-				console.log("noooooooo");
+				alert("Server Error!");
 			}
 		}else{
 			console.log("noo from main gate");
