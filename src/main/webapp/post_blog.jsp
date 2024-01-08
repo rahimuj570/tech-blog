@@ -32,8 +32,7 @@ Users u = (Users) request.getAttribute("current_user");
 				<div class="card text-primary" data-bs-theme="dark">
 					<div class="card-header">Create Post</div>
 					<div class="card_body">
-						<form class="row g-3 p-5" action="AddBlogServlet" method="post"
-							id="reg_form">
+						<form class="row g-3 p-5" id="post_form">
 							<div class="col-md-6">
 								<label for="inputEmail4" class="form-label">Title</label> <input
 									required name="title" type="text" class="form-control"
@@ -47,7 +46,7 @@ Users u = (Users) request.getAttribute("current_user");
 							<div class="col-md-6">
 								<select name="category" class="form-select"
 									aria-label="Default select example">
-									<option selected>Select Category</option>
+									<option value=0 selected>Select Category</option>
 
 									<%
 									CategoriesDao catsDao = new CategoriesDao(ConnectionProvider.main());
@@ -85,4 +84,34 @@ Users u = (Users) request.getAttribute("current_user");
 	</div>
 
 </body>
+
+<script>
+
+document.getElementById("post_form").addEventListener("submit",(e)=>{
+	e.preventDefault();
+	let title=e.target.title.value;
+	let content=e.target.content.value;
+	let category=e.target.category.value;
+	let check_box=e.target.check_box.checked;
+	const ajx=new XMLHttpRequest();
+	ajx.onreadystatechange=function(){
+		if(this.readyState===4){
+			if(this.status===200){
+				if(this.responseText==="Must Select A Category."){
+					alert("Must Select A Category.");
+				}
+				console.log("yessssssss");
+			}else{
+				console.log("noooooooo");
+			}
+		}else{
+			console.log("noo from main gate");
+		}
+	}
+	ajx.open("post","AddBlogServlet",true);
+	ajx.setRequestHeader("Content-type",
+	"application/x-www-form-urlencoded");
+	ajx.send("title="+title+"&content="+content+"&category="+category+"&check_box="+check_box);
+})
+</script>
 </html>

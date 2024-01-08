@@ -59,4 +59,13 @@
     <servlet-name>AddBlogServlet</servlet-name>
     <url-pattern>/AddBlogServlet</url-pattern>
   </servlet-mapping>
+  <filter>
+    <display-name>AddBlogFilter</display-name>
+    <filter-name>AddBlogFilter</filter-name>
+    <filter-class>helper.AddBlogFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AddBlogFilter</filter-name>
+    <url-pattern>/AddBlogServlet</url-pattern>
+  </filter-mapping>
 </web-app>
