@@ -33,10 +33,16 @@ Users u = (Users) session.getAttribute("current_user");
 
 	<section class="h-100 gradient-custom-2">
 		<div class="container py-5 h-100">
-		<% if(session.getAttribute("update_fail")!=null){ %>
+			<%
+			if (session.getAttribute("update_fail") != null) {
+			%>
 			<div class="alert alert-danger" role="alert">Update Failed!</div>
-		<%}%>
-		<%  session.removeAttribute("update_fail"); %>
+			<%
+			}
+			%>
+			<%
+			session.removeAttribute("update_fail");
+			%>
 			<div
 				class="row d-flex justify-content-center align-items-center h-100">
 				<div class="col col-lg-9 col-xl-7">
@@ -44,11 +50,24 @@ Users u = (Users) session.getAttribute("current_user");
 						<div class="rounded-top text-white d-flex flex-row"
 							style="background-color: #000; height: 200px;">
 							<div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-								<img
-									src="<%out.print("/"+"TechBlog/"+u.getUser_dp()); %>"
+
+								<%
+								if (u.getUser_dp().isBlank()) {
+								%> <img src="https://robohash.org/<%=u.getUser_name()%>>"
 									alt="Generic placeholder image"
 									class="img-fluid img-thumbnail mt-4 mb-2"
 									style="width: 150px; z-index: 1">
+								<%
+								} else {
+								%>
+								<img src="<%out.print("/" + "TechBlog/" + u.getUser_dp());%>"
+									alt="Generic placeholder image"
+									class="img-fluid img-thumbnail mt-4 mb-2"
+									style="width: 150px; z-index: 1">
+
+								<%
+								}
+								%>
 								<button data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-bs-whatever="@mdo" type="button"
 									class="btn btn-outline-dark" data-mdb-ripple-color="dark"
@@ -168,9 +187,22 @@ Users u = (Users) session.getAttribute("current_user");
 									Picture:</label> <input name="dp" type="file" class="form-control"
 									id="recipient-name">
 							</div>
+
+
+							<div class="form-check form-switch mb-3">
+								<input name="clear_dp"
+									title="This will delete your current profile picture."
+									class="form-check-input" type="checkbox" role="switch"
+									id="flexSwitchCheckChecked"> <label
+									title="This will delete your current profile picture."
+									class="form-check-label" for="flexSwitchCheckChecked">Use
+									Default Avatar</label>
+							</div>
+
+
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">Name:</label>
-								<input name="name"  type="text" class="form-control"
+								<input name="name" type="text" class="form-control"
 									id="recipient-name">
 							</div>
 							<div class="mb-3">
@@ -180,8 +212,8 @@ Users u = (Users) session.getAttribute("current_user");
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">Password:</label>
-								<input name="password"  type="password"
-									class="form-control" id="recipient-name">
+								<input name="password" type="password" class="form-control"
+									id="recipient-name">
 							</div>
 							<div class="mb-3">
 								<label for="message-text" class="col-form-label">About:</label>

@@ -57,14 +57,22 @@ public class EditUserServlet extends HttpServlet {
 		String about = request.getParameter("about");
 		Part part = request.getPart("dp");
 		String dp = dp = part.getSubmittedFileName();
+		String clear_dp = request.getParameter("clear_dp");
 
 		HttpSession s = request.getSession();
 		Users u = (Users) s.getAttribute("current_user");
+		String oldDpName = u.getUser_dp();
+		if (clear_dp != null) {
+			new ProfilePicOperation()
+					.deleteDp(getServletConfig().getServletContext().getRealPath("/") + File.separator + oldDpName);
+			u.setUser_dp("");
+		} else {
+			if (part.getSize() != 0)
+				u.setUser_dp(dp);
+		}
 		if (!about.isBlank())
 			u.setUser_about(about);
-		String oldDpName = u.getUser_dp();
-		if (part.getSize() != 0)
-			u.setUser_dp(dp);
+
 		if (!email.isBlank())
 			u.setUser_email(email);
 		if (!name.isBlank())
@@ -74,7 +82,7 @@ public class EditUserServlet extends HttpServlet {
 		String dpPath = getServletConfig().getServletContext().getRealPath("/") + File.separator + u.getUser_dp();
 		System.out.println(dpPath);
 
-		if (part.getSize() != 0) {
+		if (part.getSize() != 0 && clear_dp==null) {
 			new ProfilePicOperation()
 					.deleteDp(getServletConfig().getServletContext().getRealPath("/") + File.separator + oldDpName);
 
