@@ -4,9 +4,6 @@
 <%@page errorPage="NotFound404.jsp"%>
 <%
 Users u = (Users) session.getAttribute("current_user");
-if (u == null) {
-	response.sendRedirect("login.jsp");
-}
 %>
 <!DOCTYPE html>
 <html>
@@ -37,8 +34,7 @@ if (u == null) {
 	<section class="h-100 gradient-custom-2">
 		<div class="container py-5 h-100">
 		<% if(session.getAttribute("update_fail")!=null){ %>
-			<div class="alert alert-danger" role="alert">A simple danger
-				alert check it out!</div>
+			<div class="alert alert-danger" role="alert">Update Failed!</div>
 		<%}%>
 		<%  session.removeAttribute("update_fail"); %>
 			<div
@@ -169,22 +165,22 @@ if (u == null) {
 							enctype="multipart/form-data">
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">Profile
-									Pic:</label> <input name="dp" required type="file" class="form-control"
+									Picture:</label> <input name="dp" type="file" class="form-control"
 									id="recipient-name">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">Name:</label>
-								<input name="name" required type="text" class="form-control"
+								<input name="name"  type="text" class="form-control"
 									id="recipient-name">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">Email:</label>
-								<input name="email" required type="text" class="form-control"
+								<input name="email" type="text" class="form-control"
 									id="recipient-name">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">Password:</label>
-								<input name="password" required type="password"
+								<input name="password"  type="password"
 									class="form-control" id="recipient-name">
 							</div>
 							<div class="mb-3">

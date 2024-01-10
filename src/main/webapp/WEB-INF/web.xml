@@ -62,10 +62,24 @@
   <filter>
     <display-name>AddBlogFilter</display-name>
     <filter-name>AddBlogFilter</filter-name>
-    <filter-class>helper.AddBlogFilter</filter-class>
+    <filter-class>filters.AddBlogFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>AddBlogFilter</filter-name>
     <url-pattern>/AddBlogServlet</url-pattern>
+  </filter-mapping>
+  <filter>
+    <display-name>CurrentUserFilter</display-name>
+    <filter-name>CurrentUserFilter</filter-name>
+    <filter-class>filters.CurrentUserFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CurrentUserFilter</filter-name>
+    <!-- <url-pattern>profile.jsp</url-pattern> -->
+    
+    <url-pattern>/CurrentUserFilter</url-pattern>
+    <url-pattern>/post_blog.jsp</url-pattern>
+    <url-pattern>/profile.jsp</url-pattern>
+<!--     <url-pattern>/index.jsp</url-pattern> -->
   </filter-mapping>
 </web-app>

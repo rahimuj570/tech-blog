@@ -5,6 +5,7 @@
 <%@page import="entities.Categories"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@page errorPage="NotFound404.jsp"%>
 <%
 Users u = (Users) request.getAttribute("current_user");
 %>

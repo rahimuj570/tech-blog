@@ -1,4 +1,4 @@
-package helper;
+package filters;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpFilter;
