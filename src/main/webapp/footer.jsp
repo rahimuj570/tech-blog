@@ -35,7 +35,11 @@
 							alert("Successfully Registered!");
 							window.location="login.jsp";
 							}else{
-								alert("Must entry all data")
+								if(this.responseText==="Must Entry All Data"){
+									
+								alert("Must Entry All Data")
+								}else
+								alert("Maybe Email already exist...")
 							}
 						}else{
 							alert("Something Went wrong!")

@@ -51,7 +51,7 @@ public class RegisterServlet extends HttpServlet {
 		String about = request.getParameter("about");
 		String gender = request.getParameter("gender");
 		String check_box = request.getParameter("check_box");
-		String dp=request.getParameter("dp");
+		String dp="";
 
 		if (about.isEmpty()) {
 			about = "Hi there, I'm here!";
@@ -63,7 +63,7 @@ public class RegisterServlet extends HttpServlet {
 			boolean f=dao.save_user(user);
 			out.print(f);
 		}else {
-			out.print(false);
+			out.print("Must Entry All Data");
 		}
 
 	}

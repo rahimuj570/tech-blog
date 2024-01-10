@@ -103,6 +103,7 @@ document.getElementById("post_form").addEventListener("submit",(e)=>{
 				}else{
 				if(this.responseText=="1"){
 					alert("Successfully Post");
+					aler("newly created post e jump korbo")
 				}else{
 					alert("Something Went Wrong!")
 				}

@@ -1,7 +1,7 @@
 <%@page import="entities.Users"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page errorPage="NotFound404.jsp"%>
+
 <%
 Users u = (Users) session.getAttribute("current_user");
 %>
