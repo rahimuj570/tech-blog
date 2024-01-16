@@ -75,11 +75,18 @@
   </filter>
   <filter-mapping>
     <filter-name>CurrentUserFilter</filter-name>
-    <!-- <url-pattern>profile.jsp</url-pattern> -->
-    
     <url-pattern>/CurrentUserFilter</url-pattern>
     <url-pattern>/post_blog.jsp</url-pattern>
     <url-pattern>/profile.jsp</url-pattern>
-<!--     <url-pattern>/index.jsp</url-pattern> -->
   </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GetAllBlogsServlet</display-name>
+    <servlet-name>GetAllBlogsServlet</servlet-name>
+    <servlet-class>servlets.GetAllBlogsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAllBlogsServlet</servlet-name>
+    <url-pattern>/GetAllBlogsServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

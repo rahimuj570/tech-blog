@@ -38,28 +38,52 @@ public class BlogsDao {
 		return f;
 	}
 
-//	public String getAuthorOfBlog(int uid) {
-//		String query=""select * from;
-//	return null;}
-
-	public boolean getBlogByCategory(int category_id) {
-		boolean f = false;
-		String query = "select b.blog_title, b.blog_id, b.blog_content, b.blog_comment_status,c.category_name,u.user_name, b.blog_date"
-				+ " from blogs b  inner join users u  inner join categories c where b.blog_author=? and u.user_id=? and c.category_id=?and c.category_id=b.blog_category;";
+	public ArrayList<Blogs> getAllPost() {
+		String query = "select * from blogs";
+		ArrayList<Blogs> entities = new ArrayList<Blogs>();
 		try {
-
 			PreparedStatement pst = con.prepareStatement(query);
-			pst.setInt(1, category_id);
 			ResultSet res = pst.executeQuery();
-			ArrayList<Blogs> blogs = new ArrayList<Blogs>();
 			while (res.next()) {
-				Blogs b = new Blogs();
-//				b.getBlog_author(res.get);
+				String title = res.getString("blog_title");
+				String content = res.getString("blog_content");
+				int blog_id = res.getInt("blog_id");
+				int blog_category = res.getInt("blog_category");
+				int author = res.getInt("blog_author");
+				String comment_status = res.getString("blog_comment_status");
+				Timestamp blog_date = res.getTimestamp("blog_date");
+				Blogs entity = new Blogs(blog_id, title, content, blog_category, author, blog_date, comment_status);
+				entities.add(entity);
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-		return f;
+
+		return entities;
 	}
+
+//	public String getAuthorOfBlog(int uid) {
+//		String query=""select * from;
+//	return null;}
+
+//	public boolean getBlogByCategory(int category_id) {
+//		boolean f = false;
+//		String query = "select b.blog_title, b.blog_id, b.blog_content, b.blog_comment_status,c.category_name,u.user_name, b.blog_date"
+//				+ " from blogs b  inner join users u  inner join categories c where b.blog_author=? and u.user_id=? and c.category_id=?and c.category_id=b.blog_category;";
+//		try {
+//
+//			PreparedStatement pst = con.prepareStatement(query);
+//			pst.setInt(1, category_id);
+//			ResultSet res = pst.executeQuery();
+//			ArrayList<Blogs> blogs = new ArrayList<Blogs>();
+//			while (res.next()) {
+//				Blogs b = new Blogs();
+////				b.getBlog_author(res.get);
+//			}
+//		} catch (SQLException e) {
+//			System.out.println(e);
+//		}
+//		return f;
+//	}
 
 }

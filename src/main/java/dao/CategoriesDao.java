@@ -36,4 +36,19 @@ public class CategoriesDao {
 		return cats;
 	}
 
+	public String getCategoryById(int id) {
+		String name = null;
+		String query = "select category_name from categories where category_id=?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setInt(1, id);
+			ResultSet res = pst.executeQuery();
+			if (res.next())
+				name = res.getString("category_name");
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return name;
+	}
+
 }
