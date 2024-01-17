@@ -52,6 +52,22 @@ public class BlogsDao {
 			System.out.println(e);
 		}
 	return count;}
+	
+	
+	public int countPost(int uid) {
+		int count=0;
+		String query="select count(*) as count from blogs where blog_author=?";
+		try {
+			PreparedStatement pst=con.prepareStatement(query);
+			pst.setInt(1, uid);
+			ResultSet res=pst.executeQuery();
+			if(res.next()) {
+				count=res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return count;}
 
 	public ArrayList<Blogs> getAllPost(int start, int amount) {
 		String query = "select * from blogs order by blog_date DESC limit ?,? ";
@@ -78,10 +94,35 @@ public class BlogsDao {
 
 		return entities;
 	}
+	
+	
+	public ArrayList<Blogs> getPostByUserId(int id,int start, int amount) {
+		String query = "select * from blogs where blog_author=? order by blog_date DESC limit ?,? ";
+		ArrayList<Blogs> entities = new ArrayList<Blogs>();
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setInt(1, id);
+			pst.setInt(2, start);
+			pst.setInt(3, amount);
+			ResultSet res = pst.executeQuery();
+			while (res.next()) {
+				String title = res.getString("blog_title");
+				String content = res.getString("blog_content");
+				int blog_id = res.getInt("blog_id");
+				int blog_category = res.getInt("blog_category");
+				int author = res.getInt("blog_author");
+				String comment_status = res.getString("blog_comment_status");
+				Timestamp blog_date = res.getTimestamp("blog_date");
+				Blogs entity = new Blogs(blog_id, title, content, blog_category, author, blog_date, comment_status);
+				entities.add(entity);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		
+		return entities;
+	}
 
-//	public String getAuthorOfBlog(int uid) {
-//		String query=""select * from;
-//	return null;}
 
 //	public boolean getBlogByCategory(int category_id) {
 //		boolean f = false;

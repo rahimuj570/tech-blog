@@ -1,3 +1,10 @@
+<%@page import="dao.CategoriesDao"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="entities.Blogs"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="helper.ConnectionProvider"%>
+<%@page import="dao.BlogsDao"%>
 <%@page import="entities.Users"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -25,7 +32,8 @@ Users u = (Users) session.getAttribute("current_user");
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 	crossorigin="anonymous"></script>
-
+<script src="https://kit.fontawesome.com/fa8c3d741e.js"
+	crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -53,7 +61,8 @@ Users u = (Users) session.getAttribute("current_user");
 
 								<%
 								if (u.getUser_dp().isBlank()) {
-								%> <img src="https://robohash.org/<%=u.getUser_name()%>>"
+								%>
+								<img src="https://robohash.org/<%=u.getUser_name()%>>"
 									alt="Generic placeholder image"
 									class="img-fluid img-thumbnail mt-4 mb-2"
 									style="width: 150px; z-index: 1">
@@ -125,34 +134,66 @@ Users u = (Users) session.getAttribute("current_user");
 							<div
 								class="d-flex justify-content-between align-items-center mb-4">
 								<p class="lead fw-normal mb-0">Recent posts</p>
-								<p class="mb-0">
-									<a href="#!" class="text-muted">Show all</a>
-								</p>
 							</div>
-							<div class="row g-2">
+							<div id="my_post_container" class="row g-2">
+
+								<%
+								BlogsDao dao = new BlogsDao(ConnectionProvider.main());
+								int start = 0;
+								int amount = 3;
+								ArrayList<Blogs> allBlogs = dao.getPostByUserId(u.getUser_id(), start, amount);
+								CategoriesDao catDao = new CategoriesDao(ConnectionProvider.main());
+								for (Blogs b : allBlogs) {
+								%>
+
 								<div class="col mb-2">
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-										alt="image 1" class="w-100 rounded-3">
+									<div class="card text-bg-light mb-3" style="max-width: 18rem;">
+										<div class="card-header">
+											<div
+												class="d-flex justify-content-between align-items-center">
+												<p class="mb-0 inline"><%=catDao.getCategoryById(b.getBlog_category())%></p>
+												<i class=" fa fa-comment"> 20</i>
+											</div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title fs-3"><%=b.getBlog_title()%></h5>
+											<div class="d-flex justify-content-between">
+												<p>
+													<i class="fa-solid fa-calendar-days"></i> <span
+														class="fs-6"> <%
+ Timestamp ts = b.getBlog_date();
+ SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy hh:mm a");
+ out.print(formatter.format(ts));
+ %>
+													</span>
+												</p>
+												<p>
+													<i class="fa-regular fa-clock"></i> <span class="fs-6">
+														<%
+														int j = 0;
+														for (int i = 0; i < b.getBlog_content().length(); i++) {
+															if (b.getBlog_content().charAt(i) == ' ') {
+																j++;
+															}
+														}
+														out.print((float) j / 200 + "Min");
+														%>
+
+													</span>
+												</p>
+											</div>
+
+										</div>
+									</div>
 								</div>
-								<div class="col mb-2">
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-										alt="image 1" class="w-100 rounded-3">
-								</div>
+								<%
+								}
+								%>
 							</div>
-							<div class="row g-2">
-								<div class="col">
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-										alt="image 1" class="w-100 rounded-3">
-								</div>
-								<div class="col">
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-										alt="image 1" class="w-100 rounded-3">
-								</div>
-							</div>
+							<center>
+								<button id="show_more_btn" onclick="showMore()"
+									class="text-center btn btn-dark px-4">See More</button>
+							</center>
 						</div>
 					</div>
 				</div>
@@ -230,12 +271,43 @@ Users u = (Users) session.getAttribute("current_user");
 			</div>
 		</div>
 
-
-
-
-
-
 	</section>
 </body>
+
+
+<!-- LOADER SPINNER STRAT  -->
+<div id="loader"
+	style="width: 200px; height: 200px; position: fixed; top: 50%; left: 50%;"
+	class="spinner-border" role="status">
+	<span class="visually-hidden">Loading...</span>
+</div>
+<!-- LOADER SPINNER END -->
+
+
+
+<script>
+	let start=3;
+	let total=<%=dao.countPost(u.getUser_id())%>
+	document.getElementById("loader").style.display="none";
+const showMore=(amount)=>{
+	document.getElementById("loader").style.display="block";
+	if(document.getElementById("my_post_container").childElementCount===total){
+		document.getElementById("show_more_btn").disabled=true ;
+	}
+	const ajx=new XMLHttpRequest();
+	ajx.onreadystatechange=function(){
+		if(this.readyState==4 && this.status==200){
+			let i=document.getElementById("my_post_container").innerHTML;
+			document.getElementById("my_post_container").innerHTML=i+this.responseText;
+			start+=3;
+			document.getElementById("loader").style.display="none";
+		}
+	}
+	ajx.open('get','profile_post.jsp?start='+start+'&uid=2',true);
+	ajx.setRequestHeader("Content-type",
+	"text/html");
+	ajx.send();
+}
+</script>
 
 </html>
