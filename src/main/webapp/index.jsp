@@ -28,9 +28,16 @@
 		<div class="row gap-3 justify-content-center mt-4">
 
 
+			<%!int amount = 3;%>
 			<%
+			int start = 0;
+			int pageNo = 0;
+			if (request.getParameter("page") != null) {
+				pageNo = Integer.parseInt(request.getParameter("page")) - 1;
+			}
+			start = pageNo * 3;
 			BlogsDao dao = new BlogsDao(ConnectionProvider.main());
-			ArrayList<Blogs> AllBlogs = dao.getAllPost();
+			ArrayList<Blogs> AllBlogs = dao.getAllPost(start, amount);
 			CategoriesDao catDao = new CategoriesDao(ConnectionProvider.main());
 			for (Blogs b : AllBlogs) {
 			%>
@@ -52,35 +59,33 @@
 							<i class="fa-solid fa-calendar-days"></i> <span class="fs-6">
 								<%
 								Timestamp ts = b.getBlog_date();
-								SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy hh:mm:ss a");
-								out.print( formatter.format(ts));
+								SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy hh:mm a");
+								out.print(formatter.format(ts));
 								%>
 							</span>
 						</p>
 						<p>
-							<i class="fa-regular fa-clock"></i> <span class="fs-6">
-							
-							
-							<%
-							int j=0;
-							for(int i=0;i<b.getBlog_content().length(); i++){
-								if(b.getBlog_content().charAt(i)==' '){
-									j++;
-								}
-							}
-							out.print((float)j/200+"Min");
-							%>
-							
+							<i class="fa-regular fa-clock"></i> <span class="fs-6"> <%
+ int j = 0;
+ for (int i = 0; i < b.getBlog_content().length(); i++) {
+ 	if (b.getBlog_content().charAt(i) == ' ') {
+ 		j++;
+ 	}
+ }
+ out.print((float) j / 200 + "Min");
+ %>
+
 							</span>
 						</p>
 					</div>
 					<p class="card-text">
 						<%
-						if(b.getBlog_content().length()>300){
+						if (b.getBlog_content().length() > 300) {
 							out.print(b.getBlog_content().substring(0, 300));
-						}else out.print(b.getBlog_content());
-						
-						%> ...
+						} else
+							out.print(b.getBlog_content());
+						%>
+						...
 						<button class="btn btn-primary inline fs-6 p-1">Read More</button>
 					</p>
 				</div>
@@ -92,9 +97,36 @@
 			%>
 
 		</div>
+
+		<nav aria-label="...">
+			<ul class="pagination">
+				<li
+					class="page-item <%if (pageNo == 0)
+	out.print("active disabled");%>"><a
+					class="page-link" href="?page=<%=pageNo%>" tabindex="-1">Previous</a></li>
+				<%
+				int count = dao.countPost();
+				for (int i = 1; i <= Math.ceil((float) count / amount); i++) {
+				%>
+
+				<li class="page-item"><a
+					class="page-link <%if (pageNo == i - 1)
+	out.print("active disabled");%>"
+					href="?page=<%=i%>"><%=i%></a></li>
+				<%
+				}
+				%>
+				<li
+					class="page-item <%if (pageNo + 1 == (int) Math.ceil((float) count / amount))
+	out.print("active disabled");%>"><a
+					class="page-link" href="?page=<%=pageNo + 2%>">Next</a></li>
+			</ul>
+		</nav>
 	</div>
 
-	<p class="w-full bg-primary text-center text-white">
+	<p
+	"
+		class="w-full bg-primary text-center text-white">
 		&copy;<%
 		out.print(Year.now());
 		%>
@@ -105,16 +137,8 @@
 	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
 	crossorigin="anonymous"></script>
 
-<!-- 	<script type="text/javascript">
+<script type="text/javascript">
 	
-	let ajx=new XMLHttpRequest();
-	ajx.onreadystatechange = function() {
-		console.log(this.status)
-	console.log(this.responseText)
-	}
-	ajx.open('get','GetAllBlogsServlet',true);
-	ajx.setRequestHeader("Content-type",
-	"application/x-www-form-urlencoded");
-	ajx.send();
-	</script> -->
+</script>
+
 </html>

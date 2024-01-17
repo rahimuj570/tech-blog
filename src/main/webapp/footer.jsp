@@ -1,6 +1,8 @@
 <%@page import="java.time.Year"%>
 
-<p class="w-full bg-primary text-center text-white">
+<p
+	
+	class="w-full bg-primary text-center text-white">
 	&copy;<%
 	out.print(Year.now());
 	%>

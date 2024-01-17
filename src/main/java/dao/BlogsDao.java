@@ -37,12 +37,29 @@ public class BlogsDao {
 
 		return f;
 	}
+	
+	
+	public int countPost() {
+		int count=0;
+		String query="select count(*) as count from blogs";
+		try {
+			PreparedStatement pst=con.prepareStatement(query);
+			ResultSet res=pst.executeQuery();
+			if(res.next()) {
+				count=res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	return count;}
 
-	public ArrayList<Blogs> getAllPost() {
-		String query = "select * from blogs";
+	public ArrayList<Blogs> getAllPost(int start, int amount) {
+		String query = "select * from blogs order by blog_date DESC limit ?,? ";
 		ArrayList<Blogs> entities = new ArrayList<Blogs>();
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
+			pst.setInt(1, start);
+			pst.setInt(2, amount);
 			ResultSet res = pst.executeQuery();
 			while (res.next()) {
 				String title = res.getString("blog_title");
