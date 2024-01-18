@@ -26,6 +26,19 @@ public int myLikeStatus(int uid, int blogId) {
 	}
 return isLiked;}
 
+public int countLikesOfBlog(int blogId) {
+	int count=0;
+	String query="select count(*) as count from likes where blog_id=?";
+	try {
+		PreparedStatement pst=con.prepareStatement(query);
+		pst.setInt(1, blogId);
+		ResultSet res=pst.executeQuery();
+		if(res.next())count=res.getInt("count");
+	} catch (SQLException e) {
+		System.out.println(e);
+	}
+	return count;}
+
 public int addlikeUnlike(int uid, int blogId) {
 	int f=0;
 	int isLiked=myLikeStatus(uid,blogId);

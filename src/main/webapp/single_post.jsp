@@ -49,11 +49,12 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 
 					<%
 				int isLiked=0;
+				int likeCount=likesDao.countLikesOfBlog(single_blog.getBlog_id());
 				if(u2!=null)isLiked=likesDao.myLikeStatus(u2.getUser_id(), single_blog.getBlog_id());
 				%>
 					<i id="like_btn"
 						class="fa-regular <%=isLiked==0?"fa-thumbs-up":"fa-thumbs-down" %>"></i>
-					<span id="like_count">0</span>
+					<span id="like_count"><%=likeCount %></span>
 				</p>
 				<p>
 					<i class="fa-regular fa-comment"></i>
@@ -193,8 +194,12 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 			if(this.readyState==4 && this.status==200){
 				if(this.responseText==="unauthorized")alert("Need Login First!")
 				else{
-					if(!like_btn.classList.replace('fa-thumbs-up','fa-thumbs-down')){
+						let prevLikeCount=document.getElementById("like_count").innerText-'0';
+					if(like_btn.classList.replace('fa-thumbs-up','fa-thumbs-down')){
+						document.getElementById("like_count").innerText=prevLikeCount+1;
+					}else{
 						document.getElementById('like_btn').classList.replace('fa-thumbs-down','fa-thumbs-up') 
+						document.getElementById("like_count").innerText=prevLikeCount-1;
 					}
 				}
 			}
