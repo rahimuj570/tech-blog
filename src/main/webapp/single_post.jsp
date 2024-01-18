@@ -4,17 +4,17 @@
 <%@page import="java.time.Year"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page errorPage="NotFound404.jsp" %>
+<%@page errorPage="NotFound404.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <%
-int post_id=Integer.parseInt(request.getParameter("post_id"));
-BlogsDao singleBlogDao=new BlogsDao(ConnectionProvider.main());
-Blogs single_blog=singleBlogDao.getSinglePost(post_id);
+int post_id = Integer.parseInt(request.getParameter("post_id"));
+BlogsDao singleBlogDao = new BlogsDao(ConnectionProvider.main());
+Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 %>
-<title><%=single_blog.getBlog_title() %></title>
+<title><%=single_blog.getBlog_title()%></title>
 <link rel='stylesheet'
 	href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' />
 <script src="https://kit.fontawesome.com/fa8c3d741e.js"
@@ -22,29 +22,109 @@ Blogs single_blog=singleBlogDao.getSinglePost(post_id);
 </head>
 <body>
 	<%@include file="navbar.jsp"%>
-	
-	
-	
-	
-	<div class="card text-bg-dark">
-  <img src="cool-bg.png" class="card-img" alt="...">
-  <div class="card-img-overlay">
-    <h5 class="card-title"><%=single_blog.getBlog_title() %></h5>
-    <p class="card-text"><%=single_blog.getBlog_content() %></p>
-    <p class="card-text"><small>Posted on <%=single_blog.getBlog_date() %><br/>Posted by <%
-    
-    UsersDao udao=new UsersDao(ConnectionProvider.main());
-    Users u=udao.getUserPublicById(single_blog.getBlog_author());
-    out.print(u.getUser_name());
-    
-    %></small></p>
-  </div>
-</div>
-	
-	
-	
-	
-	
+
+
+
+
+	<div style="background: url(cool-bg.png); background-size: cover;"
+		class="card text-bg-dark">
+		  <div class="px-5 py-3">
+		<h5 class="card-title"><%=single_blog.getBlog_title()%></h5>
+		<p class="card-text"><%=single_blog.getBlog_content()%></p>
+		<p class="card-text">
+			<small>Posted on <%=single_blog.getBlog_date()%><br />Posted
+				by <%
+			UsersDao udao = new UsersDao(ConnectionProvider.main());
+			Users u = udao.getUserPublicById(single_blog.getBlog_author());
+			out.print(u.getUser_name());
+			%></small>
+		</p>
+		<div class="d-flex gap-3">
+			<p>
+				<i class="fa-regular fa-thumbs-up"></i> 0
+			</p>
+			<p>
+				<i class="fa-regular fa-comment"></i> 0
+			</p>
+		</div>
+
+
+
+		<!-- COMMENT START -->
+		<div class="container mt-2 py-5">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-12 col-lg-10 col-xl-8">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex flex-start align-items-center">
+								<img class="rounded-circle shadow-1-strong me-3"
+									src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp"
+									alt="avatar" width="60" height="60" />
+								<div>
+									<h6 class="fw-bold text-primary mb-1">Lily Coleman</h6>
+									<p class="text-muted small mb-0">Shared publicly - Jan 2020
+									</p>
+								</div>
+							</div>
+
+							<p class="mt-3 mb-4 pb-2">Lorem ipsum dolor sit amet,
+								consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+								labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+								nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+							</p>
+
+						</div>
+						
+						<%
+						
+						if(u2==null)out.print("<center><h3>Login Required For Comment</h3></center>");
+						else{
+						%>
+						<div class="card-footer py-3 border-0"
+							style="background-color: #f8f9fa;">
+							<div class="d-flex flex-start w-100">
+							
+																<%
+									if (u2.getUser_dp().isBlank()) {
+									%>
+									<img src="https://robohash.org/<%=u2.getUser_name()%>>"
+										alt="avatar" width="40" height="40"
+										class="rounded-circle shadow-1-strong me-3">
+									<%
+									} else {
+									%>
+									<img src="<%out.print("/" + "TechBlog/" + u2.getUser_dp());%>"
+										alt="avatar" width="40" height="40"
+										class="rounded-circle shadow-1-strong me-3">
+
+									<%
+									}
+									%>
+								<div class="form-outline w-100">
+									<textarea class="form-control" id="textAreaExample" rows="4"
+										style="background: #fff;"></textarea>
+								</div>
+							</div>
+							<div class="float-end mt-2 pt-1">
+								<button type="button" class="btn btn-primary btn-sm">Post
+									comment</button>
+								<button type="button" class="btn btn-outline-primary btn-sm">Clear</button>
+							</div>
+						</div>
+						<%} %>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		</div>
+	</div>
+
+
+
+
+
 	<p "
 		class="w-full bg-primary text-center text-white">
 		&copy;<%
