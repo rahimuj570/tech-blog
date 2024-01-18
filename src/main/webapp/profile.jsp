@@ -1,3 +1,4 @@
+<%@page import="dao.LikesDao"%>
 <%@page import="dao.CommentsDao"%>
 <%@page import="dao.CategoriesDao"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -109,14 +110,20 @@ Users u = (Users) session.getAttribute("current_user");
 								</p>
 							</div>
 						</div>
+						
+						<%
+						BlogsDao dao = new BlogsDao(ConnectionProvider.main());
+						LikesDao likeDao=new LikesDao(ConnectionProvider.main());
+						%>
+						
 						<div class="p-4 text-black" style="background-color: #f8f9fa;">
 							<div class="d-flex justify-content-end text-center py-1">
 								<div>
-									<p class="mb-1 h5">253</p>
+									<p class="mb-1 h5"><%=dao.countPost(u.getUser_id())%></p>
 									<p class="small text-muted mb-0">Posts</p>
 								</div>
 								<div class="px-3">
-									<p class="mb-1 h5">1026</p>
+									<p class="mb-1 h5"><%=likeDao.countLikesOfUser(u.getUser_id()) %></p>
 									<p class="small text-muted mb-0">Likes</p>
 								</div>
 							</div>
@@ -139,7 +146,7 @@ Users u = (Users) session.getAttribute("current_user");
 							<div id="my_post_container" class="row g-2">
 
 								<%
-								BlogsDao dao = new BlogsDao(ConnectionProvider.main());
+								
 								CommentsDao commentsDao=new CommentsDao(ConnectionProvider.main());
 								int start = 0;
 								int amount = 3;
