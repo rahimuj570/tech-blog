@@ -1,3 +1,5 @@
+<%@page import="entities.Comments"%>
+<%@page import="dao.CommentsDao"%>
 <%@page import="dao.UsersDao"%>
 <%@page import="entities.Blogs"%>
 <%@page import="dao.BlogsDao"%>
@@ -55,27 +57,48 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 col-lg-10 col-xl-8">
 					<div class="card">
+					
+					
+					<%
+					CommentsDao dao=new CommentsDao(ConnectionProvider.main());
+					ArrayList<Comments>allComments=dao.getAllCommentsOfBlog(single_blog.getBlog_id());
+					for(Comments c: allComments){
+						Users user=udao.getUserPublicById(c.getUser_id());
+					%>
+					
 						<div class="card-body">
 							<div class="d-flex flex-start align-items-center">
-								<img class="rounded-circle shadow-1-strong me-3"
-									src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp"
-									alt="avatar" width="60" height="60" />
+							
+							<%
+									if (user.getUser_dp().isBlank()) {
+									%>
+									<img src="https://robohash.org/<%=user.getUser_name()%>>"
+										alt="avatar" width="60" height="60"
+										class="rounded-circle shadow-1-strong me-3">
+									<%
+									} else {
+									%>
+									<img src="<%out.print("/" + "TechBlog/" + user.getUser_dp());%>"
+										alt="avatar" width="60" height="60"
+										class="rounded-circle shadow-1-strong me-3">
+
+									<%
+									}
+									%>
+
 								<div>
-									<h6 class="fw-bold text-primary mb-1">Lily Coleman</h6>
-									<p class="text-muted small mb-0">Shared publicly - Jan 2020
+									<h6 class="fw-bold text-primary mb-1"><%=user.getUser_name() %></h6>
+									<p class="text-muted small mb-0">Shared publicly - <%=c.getComment_date() %>
 									</p>
 								</div>
 							</div>
 
-							<p class="mt-3 mb-4 pb-2">Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-								labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-								nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+							<p class="mt-3 mb-4 pb-2"><%=c.getContent() %>
 							</p>
 
 						</div>
 						
-						<%
+						<%}
 						
 						if(u2==null)out.print("<center><h3>Login Required For Comment</h3></center>");
 						else{
