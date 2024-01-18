@@ -89,7 +89,7 @@
 							out.print(b.getBlog_content());
 						%>
 						...
-						<button class="btn btn-primary inline fs-6 p-1">Read More</button>
+						<a href="single_post.jsp?post_id=<%=b.getBlog_id()%>"><button class="btn btn-primary inline fs-6 p-1">Read More</button></a>
 					</p>
 				</div>
 			</div>

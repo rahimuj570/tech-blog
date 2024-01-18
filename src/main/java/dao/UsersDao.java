@@ -62,6 +62,28 @@ public class UsersDao {
 		}
 		return user;
 	}
+	public Users getUserPublicById(int id) {
+		Users user = null;
+		String query = "select user_id, user_name, user_dp from users where user_id=?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setInt(1, id);
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				user = new Users();
+				try {
+					user.setUser_name(res.getString("user_name"));
+					user.setUser_id(res.getInt("user_id"));
+					user.setUser_dp(res.getString("user_dp"));
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return user;
+	}
 
 	public boolean edit_user(Users u) {
 		boolean f = false;

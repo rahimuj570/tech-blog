@@ -37,70 +37,74 @@ public class BlogsDao {
 
 		return f;
 	}
-	
-	
-	public int countPost() {
-		int count=0;
-		String query="select count(*) as count from blogs";
-		try {
-			PreparedStatement pst=con.prepareStatement(query);
-			ResultSet res=pst.executeQuery();
-			if(res.next()) {
-				count=res.getInt("count");
-			}
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-	return count;}
-	
-	
-	public int countPost(int uid) {
-		int count=0;
-		String query="select count(*) as count from blogs where blog_author=?";
-		try {
-			PreparedStatement pst=con.prepareStatement(query);
-			pst.setInt(1, uid);
-			ResultSet res=pst.executeQuery();
-			if(res.next()) {
-				count=res.getInt("count");
-			}
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-		return count;}
-	
-	public int countPostOfCategory(int catId) {
-		int count=0;
-		String query=null;
-		
-		if(catId!=0)query="select count(*) as count from blogs where blog_category=?";
-		else query="select count(*) as count from blogs";
-		try {
-			PreparedStatement pst=con.prepareStatement(query);
-			if(catId!=0)pst.setInt(1, catId);
-			ResultSet res=pst.executeQuery();
-			if(res.next()) {
-				count=res.getInt("count");
-			}
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-		return count;}
 
-	public ArrayList<Blogs> getAllPost(int catId,int start, int amount) {
-		String query=null;
-		if(catId==0) {
+	public int countPost() {
+		int count = 0;
+		String query = "select count(*) as count from blogs";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				count = res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return count;
+	}
+
+	public int countPost(int uid) {
+		int count = 0;
+		String query = "select count(*) as count from blogs where blog_author=?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setInt(1, uid);
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				count = res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return count;
+	}
+
+	public int countPostOfCategory(int catId) {
+		int count = 0;
+		String query = null;
+
+		if (catId != 0)
+			query = "select count(*) as count from blogs where blog_category=?";
+		else
+			query = "select count(*) as count from blogs";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			if (catId != 0)
+				pst.setInt(1, catId);
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				count = res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return count;
+	}
+
+	public ArrayList<Blogs> getAllPost(int catId, int start, int amount) {
+		String query = null;
+		if (catId == 0) {
 			query = "select * from blogs order by blog_date DESC limit ?,? ";
-		}else {
+		} else {
 			query = "select * from blogs where blog_category=? order by blog_date DESC limit ?,? ";
 		}
 		ArrayList<Blogs> entities = new ArrayList<Blogs>();
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
-			if(catId==0) {
+			if (catId == 0) {
 				pst.setInt(1, start);
 				pst.setInt(2, amount);
-			}else {
+			} else {
 				pst.setInt(1, catId);
 				pst.setInt(2, start);
 				pst.setInt(3, amount);
@@ -123,9 +127,8 @@ public class BlogsDao {
 
 		return entities;
 	}
-	
-	
-	public ArrayList<Blogs> getPostByUserId(int id,int start, int amount) {
+
+	public ArrayList<Blogs> getPostByUserId(int id, int start, int amount) {
 		String query = "select * from blogs where blog_author=? order by blog_date DESC limit ?,? ";
 		ArrayList<Blogs> entities = new ArrayList<Blogs>();
 		try {
@@ -148,29 +151,30 @@ public class BlogsDao {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-		
+
 		return entities;
 	}
 
-
-//	public boolean getBlogByCategory(int category_id) {
-//		boolean f = false;
-//		String query = "select b.blog_title, b.blog_id, b.blog_content, b.blog_comment_status,c.category_name,u.user_name, b.blog_date"
-//				+ " from blogs b  inner join users u  inner join categories c where b.blog_author=? and u.user_id=? and c.category_id=?and c.category_id=b.blog_category;";
-//		try {
-//
-//			PreparedStatement pst = con.prepareStatement(query);
-//			pst.setInt(1, category_id);
-//			ResultSet res = pst.executeQuery();
-//			ArrayList<Blogs> blogs = new ArrayList<Blogs>();
-//			while (res.next()) {
-//				Blogs b = new Blogs();
-////				b.getBlog_author(res.get);
-//			}
-//		} catch (SQLException e) {
-//			System.out.println(e);
-//		}
-//		return f;
-//	}
+	public Blogs getSinglePost(int postId) {
+		String query = "select * from blogs where blog_id=?";
+		Blogs blog = new Blogs();
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setInt(1, postId);
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				blog.setBlog_author(res.getInt("blog_author"));
+				blog.setBlog_category(res.getInt("blog_category"));
+				blog.setBlog_title(res.getString("blog_title"));
+				blog.setBlog_content(res.getString("blog_content"));
+				blog.setBlog_id(res.getInt("blog_id"));
+				blog.setBlog_comment_status(res.getString("blog_comment_status"));
+				blog.setBlog_date(res.getTimestamp("blog_date"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return blog;
+	}
 
 }
