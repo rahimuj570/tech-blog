@@ -89,4 +89,14 @@
     <servlet-name>GetAllBlogsServlet</servlet-name>
     <url-pattern>/GetAllBlogsServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CommentsServlet</display-name>
+    <servlet-name>CommentsServlet</servlet-name>
+    <servlet-class>servlets.CommentsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CommentsServlet</servlet-name>
+    <url-pattern>/CommentsServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

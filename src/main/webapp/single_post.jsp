@@ -100,15 +100,16 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									<%
 									}
 									%>
-								<div class="form-outline w-100">
-									<textarea class="form-control" id="textAreaExample" rows="4"
+								<form action="CommentsServlet" method="post" class="form-outline w-100">
+									<textarea name="comment" required class="form-control" id="comment" rows="4"
 										style="background: #fff;"></textarea>
-								</div>
-							</div>
+										<input type="hidden" value="<%=single_blog.getBlog_id() %>" name="blog_id"></input>
 							<div class="float-end mt-2 pt-1">
-								<button type="button" class="btn btn-primary btn-sm">Post
+								<button type="submit" class="btn btn-primary btn-sm">Post
 									comment</button>
-								<button type="button" class="btn btn-outline-primary btn-sm">Clear</button>
+								<button onclick=document.getElementById('comment').value='' type="button" class="btn btn-outline-primary btn-sm">Clear</button>
+							</div>
+								</form>
 							</div>
 						</div>
 						<%} %>
