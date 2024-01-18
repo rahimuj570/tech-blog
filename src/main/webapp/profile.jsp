@@ -1,3 +1,4 @@
+<%@page import="dao.CommentsDao"%>
 <%@page import="dao.CategoriesDao"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
@@ -139,6 +140,7 @@ Users u = (Users) session.getAttribute("current_user");
 
 								<%
 								BlogsDao dao = new BlogsDao(ConnectionProvider.main());
+								CommentsDao commentsDao=new CommentsDao(ConnectionProvider.main());
 								int start = 0;
 								int amount = 3;
 								ArrayList<Blogs> allBlogs = dao.getPostByUserId(u.getUser_id(), start, amount);
@@ -152,7 +154,7 @@ Users u = (Users) session.getAttribute("current_user");
 											<div
 												class="d-flex justify-content-between align-items-center">
 												<p class="mb-0 inline"><%=catDao.getCategoryById(b.getBlog_category())%></p>
-												<i class=" fa fa-comment"> 20</i>
+												<i class=" fa fa-comment"> <%=commentsDao.countComment(b.getBlog_id())%></i>
 											</div>
 										</div>
 										<div class="card-body">

@@ -1,4 +1,5 @@
 
+<%@page import="dao.CommentsDao"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -38,6 +39,7 @@
 				pageNo = Integer.parseInt(request.getParameter("page")) - 1;
 			}
 			start = pageNo * 3;
+			CommentsDao commentsDao=new CommentsDao(ConnectionProvider.main());
 			BlogsDao dao = new BlogsDao(ConnectionProvider.main());
 			ArrayList<Blogs> AllBlogs = dao.getAllPost(categoryId,start, amount);
 			CategoriesDao catDao = new CategoriesDao(ConnectionProvider.main());
@@ -52,7 +54,7 @@
 				<div class="card-header">
 					<div class="d-flex justify-content-between align-items-center">
 						<p class="mb-0 inline"><%=catDao.getCategoryById(b.getBlog_category())%></p>
-						<i class=" fa fa-comment"> 20</i>
+						<i class=" fa fa-comment"> <%=commentsDao.countComment(b.getBlog_id())%></i>
 					</div>
 				</div>
 				<div class="card-body">

@@ -30,46 +30,47 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 
 	<div style="background: url(cool-bg.png); background-size: cover;"
 		class="card text-bg-dark">
-		  <div class="px-5 py-3">
-		<h5 class="card-title"><%=single_blog.getBlog_title()%></h5>
-		<p class="card-text"><%=single_blog.getBlog_content()%></p>
-		<p class="card-text">
-			<small>Posted on <%=single_blog.getBlog_date()%><br />Posted
-				by <%
-			UsersDao udao = new UsersDao(ConnectionProvider.main());
-			Users u = udao.getUserPublicById(single_blog.getBlog_author());
-			out.print(u.getUser_name());
-			%></small>
-		</p>
-		<div class="d-flex gap-3">
-			<p>
-				<i class="fa-regular fa-thumbs-up"></i> 0
+		<div class="px-5 py-3">
+			<h5 class="card-title"><%=single_blog.getBlog_title()%></h5>
+			<p class="card-text"><%=single_blog.getBlog_content()%></p>
+			<p class="card-text">
+				<small>Posted on <%=single_blog.getBlog_date()%><br />Posted
+					by <%
+				CommentsDao dao = new CommentsDao(ConnectionProvider.main());
+				UsersDao udao = new UsersDao(ConnectionProvider.main());
+				Users u = udao.getUserPublicById(single_blog.getBlog_author());
+				out.print(u.getUser_name());
+				%></small>
 			</p>
-			<p>
-				<i class="fa-regular fa-comment"></i> 0
-			</p>
-		</div>
+			<div class="d-flex gap-3">
+				<p>
+					<i class="fa-regular fa-thumbs-up"></i> 0
+				</p>
+				<p>
+					<i class="fa-regular fa-comment"></i>
+					<%=dao.countComment(single_blog.getBlog_id())%>
+				</p>
+			</div>
 
 
 
-		<!-- COMMENT START -->
-		<div class="container mt-2 py-5">
-			<div class="row d-flex justify-content-center">
-				<div class="col-md-12 col-lg-10 col-xl-8">
-					<div class="card">
-					
-					
-					<%
-					CommentsDao dao=new CommentsDao(ConnectionProvider.main());
-					ArrayList<Comments>allComments=dao.getAllCommentsOfBlog(single_blog.getBlog_id());
-					for(Comments c: allComments){
-						Users user=udao.getUserPublicById(c.getUser_id());
-					%>
-					
-						<div class="card-body">
-							<div class="d-flex flex-start align-items-center">
-							
+			<!-- COMMENT START -->
+			<div class="container mt-2 py-5">
+				<div class="row d-flex justify-content-center">
+					<div class="col-md-12 col-lg-10 col-xl-8">
+						<div class="card">
+
+
 							<%
+							ArrayList<Comments> allComments = dao.getAllCommentsOfBlog(single_blog.getBlog_id());
+							for (Comments c : allComments) {
+								Users user = udao.getUserPublicById(c.getUser_id());
+							%>
+
+							<div class="card-body">
+								<div class="d-flex flex-start align-items-center">
+
+									<%
 									if (user.getUser_dp().isBlank()) {
 									%>
 									<img src="https://robohash.org/<%=user.getUser_name()%>>"
@@ -78,7 +79,8 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									<%
 									} else {
 									%>
-									<img src="<%out.print("/" + "TechBlog/" + user.getUser_dp());%>"
+									<img
+										src="<%out.print("/" + "TechBlog/" + user.getUser_dp());%>"
 										alt="avatar" width="60" height="60"
 										class="rounded-circle shadow-1-strong me-3">
 
@@ -86,28 +88,32 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									}
 									%>
 
-								<div>
-									<h6 class="fw-bold text-primary mb-1"><%=user.getUser_name() %></h6>
-									<p class="text-muted small mb-0">Shared publicly - <%=c.getComment_date() %>
-									</p>
+									<div>
+										<h6 class="fw-bold text-primary mb-1"><%=user.getUser_name()%></h6>
+										<p class="text-muted small mb-0">
+											Shared publicly -
+											<%=c.getComment_date()%>
+										</p>
+									</div>
 								</div>
+
+								<p class="mt-3 mb-4 pb-2"><%=c.getContent()%>
+								</p>
+
 							</div>
 
-							<p class="mt-3 mb-4 pb-2"><%=c.getContent() %>
-							</p>
+							<%
+							}
 
-						</div>
-						
-						<%}
-						
-						if(u2==null)out.print("<center><h3>Login Required For Comment</h3></center>");
-						else{
-						%>
-						<div class="card-footer py-3 border-0"
-							style="background-color: #f8f9fa;">
-							<div class="d-flex flex-start w-100">
-							
-																<%
+							if (u2 == null)
+							out.print("<center><h3>Login Required For Comment</h3></center>");
+							else {
+							%>
+							<div class="card-footer py-3 border-0"
+								style="background-color: #f8f9fa;">
+								<div class="d-flex flex-start w-100">
+
+									<%
 									if (u2.getUser_dp().isBlank()) {
 									%>
 									<img src="https://robohash.org/<%=u2.getUser_name()%>>"
@@ -123,23 +129,28 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									<%
 									}
 									%>
-								<form action="CommentsServlet" method="post" class="form-outline w-100">
-									<textarea name="comment" required class="form-control" id="comment" rows="4"
-										style="background: #fff;"></textarea>
-										<input type="hidden" value="<%=single_blog.getBlog_id() %>" name="blog_id"></input>
-							<div class="float-end mt-2 pt-1">
-								<button type="submit" class="btn btn-primary btn-sm">Post
-									comment</button>
-								<button onclick=document.getElementById('comment').value='' type="button" class="btn btn-outline-primary btn-sm">Clear</button>
+									<form action="CommentsServlet" method="post"
+										class="form-outline w-100">
+										<textarea name="comment" required class="form-control"
+											id="comment" rows="4" style="background: #fff;"></textarea>
+										<input type="hidden" value="<%=single_blog.getBlog_id()%>"
+											name="blog_id"></input>
+										<div class="float-end mt-2 pt-1">
+											<button type="submit" class="btn btn-primary btn-sm">Post
+												comment</button>
+											<button onclick=document.getElementById( 'comment').value=''
+												type="button" class="btn btn-outline-primary btn-sm">Clear</button>
+										</div>
+									</form>
+								</div>
 							</div>
-								</form>
-							</div>
+							<%
+							}
+							%>
 						</div>
-						<%} %>
 					</div>
 				</div>
 			</div>
-		</div>
 
 
 		</div>
