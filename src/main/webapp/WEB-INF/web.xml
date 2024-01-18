@@ -99,4 +99,24 @@
     <servlet-name>CommentsServlet</servlet-name>
     <url-pattern>/CommentsServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddLikesServlet</display-name>
+    <servlet-name>AddLikesServlet</servlet-name>
+    <servlet-class>servlets.AddLikesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddLikesServlet</servlet-name>
+    <url-pattern>/AddLikesServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CheckMyLike</display-name>
+    <servlet-name>CheckMyLike</servlet-name>
+    <servlet-class>servlets.CheckMyLike</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckMyLike</servlet-name>
+    <url-pattern>/CheckMyLike</url-pattern>
+  </servlet-mapping>
 </web-app>

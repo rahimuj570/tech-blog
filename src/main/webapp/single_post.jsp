@@ -1,3 +1,4 @@
+<%@page import="dao.LikesDao"%>
 <%@page import="entities.Comments"%>
 <%@page import="dao.CommentsDao"%>
 <%@page import="dao.UsersDao"%>
@@ -12,6 +13,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <%
+LikesDao likesDao=new LikesDao(ConnectionProvider.main());
 int post_id = Integer.parseInt(request.getParameter("post_id"));
 BlogsDao singleBlogDao = new BlogsDao(ConnectionProvider.main());
 Blogs single_blog = singleBlogDao.getSinglePost(post_id);
@@ -44,7 +46,14 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 			</p>
 			<div class="d-flex gap-3">
 				<p>
-					<i class="fa-regular fa-thumbs-up"></i> 0
+
+					<%
+				int isLiked=0;
+				if(u2!=null)isLiked=likesDao.myLikeStatus(u2.getUser_id(), single_blog.getBlog_id());
+				%>
+					<i id="like_btn"
+						class="fa-regular <%=isLiked==0?"fa-thumbs-up":"fa-thumbs-down" %>"></i>
+					<span id="like_count">0</span>
 				</p>
 				<p>
 					<i class="fa-regular fa-comment"></i>
@@ -160,8 +169,7 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 
 
 
-	<p "
-		class="w-full bg-primary text-center text-white">
+	<p class="w-full bg-primary text-center text-white">
 		&copy;<%
 		out.print(Year.now());
 		%>
@@ -175,4 +183,27 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
 	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
 	crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	let like_btn=document.getElementById('like_btn');
+	like_btn.addEventListener('click',()=>{
+		let blogId=<%=single_blog.getBlog_id()%>
+		const ajx=new XMLHttpRequest();
+		ajx.onreadystatechange=function(){
+			if(this.readyState==4 && this.status==200){
+				if(this.responseText==="unauthorized")alert("Need Login First!")
+				else{
+					if(!like_btn.classList.replace('fa-thumbs-up','fa-thumbs-down')){
+						document.getElementById('like_btn').classList.replace('fa-thumbs-down','fa-thumbs-up') 
+					}
+				}
+			}
+		}
+		ajx.open('POST','AddLikesServlet',true);
+		ajx.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+		ajx.send("blog_id="+blogId);
+	})
+	
+	
+	</script>
 </html>
