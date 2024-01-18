@@ -47,6 +47,7 @@ public class UsersDao {
 				user = new Users();
 				try {
 					user.setUser_name(res.getString("user_name"));
+					user.setUser_password(res.getString("user_password"));
 					user.setUser_email(res.getString("user_email"));
 					user.setRegistration_date(res.getTimestamp("registration_date"));
 					user.setUser_about(res.getString("user_about"));
@@ -85,8 +86,8 @@ public class UsersDao {
 		return user;
 	}
 
-	public boolean edit_user(Users u) {
-		boolean f = false;
+	public String edit_user(Users u) {
+		String f = "false";
 		String query = "update users set user_name=? ,user_email=?,user_password=?,user_about=?,user_dp=? where user_id=?";
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
@@ -97,9 +98,9 @@ public class UsersDao {
 			pst.setString(5, u.getUser_dp());
 			pst.setInt(6, u.getUser_id());
 			pst.executeUpdate();
-			f = true;
+			f = "true";
 		} catch (SQLException e) {
-			System.out.println(e);
+			f=e.toString();
 		}
 
 		return f;

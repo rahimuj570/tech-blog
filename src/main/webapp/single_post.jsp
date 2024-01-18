@@ -138,6 +138,7 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 
 									<%
 									}
+									if(single_blog.getBlog_comment_status().equals("true")){
 									%>
 									<form action="CommentsServlet" method="post"
 										class="form-outline w-100">
@@ -148,10 +149,11 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 										<div class="float-end mt-2 pt-1">
 											<button type="submit" class="btn btn-primary btn-sm">Post
 												comment</button>
-											<button onclick=document.getElementById( 'comment').value=''
+											<button onclick=document.getElementById('comment').value=''
 												type="button" class="btn btn-outline-primary btn-sm">Clear</button>
 										</div>
 									</form>
+									<%}else out.print("<h3>Comment is not allowed for this post</h3>"); %>
 								</div>
 							</div>
 							<%

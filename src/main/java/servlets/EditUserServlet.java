@@ -60,7 +60,17 @@ public class EditUserServlet extends HttpServlet {
 		String clear_dp = request.getParameter("clear_dp");
 
 		HttpSession s = request.getSession();
-		Users u = (Users) s.getAttribute("current_user");
+		Users sessionU=new Users();
+		sessionU = (Users) s.getAttribute("current_user");
+		Users u=new Users();
+		u.setRegistration_date(sessionU.getRegistration_date());
+		u.setUser_about(sessionU.getUser_about());
+		u.setUser_dp(sessionU.getUser_dp());
+		u.setUser_email(sessionU.getUser_email());
+		u.setUser_gender(sessionU.getUser_gender());
+		u.setUser_id(sessionU.getUser_id());
+		u.setUser_name(sessionU.getUser_name());
+		u.setUser_password(sessionU.getUser_password());
 		String oldDpName = u.getUser_dp();
 		if (clear_dp != null) {
 			new ProfilePicOperation()
@@ -94,11 +104,21 @@ public class EditUserServlet extends HttpServlet {
 		}
 
 		UsersDao dao = new UsersDao(ConnectionProvider.main());
-		if (dao.edit_user(u)) {
+		String errorMsg=dao.edit_user(u);
+		System.out.println(errorMsg);
+		if (errorMsg.equals("true")) {
+			sessionU.setRegistration_date(u.getRegistration_date());
+			sessionU.setUser_about(u.getUser_about());
+			sessionU.setUser_dp(u.getUser_dp());
+			sessionU.setUser_email(u.getUser_email());
+			sessionU.setUser_gender(u.getUser_gender());
+			sessionU.setUser_id(u.getUser_id());
+			sessionU.setUser_name(u.getUser_name());
+			sessionU.setUser_password(u.getUser_password());
 			response.sendRedirect("profile.jsp");
 		} else {
+			s.setAttribute("update_fail", new Message().main("SQL", errorMsg));
 			response.sendRedirect("profile.jsp");
-			s.setAttribute("update_fail", new Message().main("SQL", "Faild to Update"));
 		}
 
 	}

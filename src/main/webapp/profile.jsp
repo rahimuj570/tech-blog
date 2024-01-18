@@ -45,7 +45,7 @@ Users u = (Users) session.getAttribute("current_user");
 			<%
 			if (session.getAttribute("update_fail") != null) {
 			%>
-			<div class="alert alert-danger" role="alert">Update Failed!</div>
+			<div class="alert alert-danger" role="alert">Update Failed! <br/> <%=session.getAttribute("update_fail")%></div>
 			<%
 			}
 			%>
@@ -305,7 +305,7 @@ const showMore=(amount)=>{
 			document.getElementById("loader").style.display="none";
 		}
 	}
-	ajx.open('get','profile_post.jsp?start='+start+'&uid=2',true);
+	ajx.open('get','profile_post.jsp?start='+start+'&uid=<%=u.getUser_id()%>',true);
 	ajx.setRequestHeader("Content-type",
 	"text/html");
 	ajx.send();
