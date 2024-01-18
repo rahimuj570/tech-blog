@@ -1,3 +1,7 @@
+<%@page import="entities.Categories"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="helper.ConnectionProvider"%>
+<%@page import="dao.CategoriesDao"%>
 <%@page import="entities.Users"%>
 <% Users u2= (Users)session.getAttribute("current_user"); %>
 <nav class="navbar navbar-expand-lg bg-body-tertiary"
@@ -18,10 +22,16 @@
 					class="nav-link dropdown-toggle" href="#" role="button"
 					data-bs-toggle="dropdown" aria-expanded="false"> Categories </a>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="#">Action</a></li>
-						<li><a class="dropdown-item" href="#">Another action</a></li>
+					
+					<%
+					CategoriesDao dao2=new CategoriesDao(ConnectionProvider.main());
+					ArrayList<Categories>allCategories=dao2.getAllCategories();
+					for(Categories c:allCategories){
+					%>
+						<li><a class="dropdown-item" href="?category=<%=c.getCategory_id()%>"><%=c.getCategory_name() %></a></li>
+						<%} %>
 						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="#">Something else here</a></li>
+						<li><a class="dropdown-item" href="/TechBlog">All Posts</a></li>
 					</ul></li>
 				<li class="nav-item"><a class="nav-link" href="#">Contact
 						Us</a></li>

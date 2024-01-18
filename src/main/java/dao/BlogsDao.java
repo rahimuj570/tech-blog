@@ -68,14 +68,43 @@ public class BlogsDao {
 			System.out.println(e);
 		}
 		return count;}
+	
+	public int countPostOfCategory(int catId) {
+		int count=0;
+		String query=null;
+		
+		if(catId!=0)query="select count(*) as count from blogs where blog_category=?";
+		else query="select count(*) as count from blogs";
+		try {
+			PreparedStatement pst=con.prepareStatement(query);
+			if(catId!=0)pst.setInt(1, catId);
+			ResultSet res=pst.executeQuery();
+			if(res.next()) {
+				count=res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return count;}
 
-	public ArrayList<Blogs> getAllPost(int start, int amount) {
-		String query = "select * from blogs order by blog_date DESC limit ?,? ";
+	public ArrayList<Blogs> getAllPost(int catId,int start, int amount) {
+		String query=null;
+		if(catId==0) {
+			query = "select * from blogs order by blog_date DESC limit ?,? ";
+		}else {
+			query = "select * from blogs where blog_category=? order by blog_date DESC limit ?,? ";
+		}
 		ArrayList<Blogs> entities = new ArrayList<Blogs>();
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
-			pst.setInt(1, start);
-			pst.setInt(2, amount);
+			if(catId==0) {
+				pst.setInt(1, start);
+				pst.setInt(2, amount);
+			}else {
+				pst.setInt(1, catId);
+				pst.setInt(2, start);
+				pst.setInt(3, amount);
+			}
 			ResultSet res = pst.executeQuery();
 			while (res.next()) {
 				String title = res.getString("blog_title");

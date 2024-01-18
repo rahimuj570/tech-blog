@@ -30,6 +30,8 @@
 
 			<%!int amount = 3;%>
 			<%
+			int categoryId=0;
+			if(request.getParameter("category")!=null)categoryId=Integer.parseInt(request.getParameter("category"));
 			int start = 0;
 			int pageNo = 0;
 			if (request.getParameter("page") != null) {
@@ -37,8 +39,9 @@
 			}
 			start = pageNo * 3;
 			BlogsDao dao = new BlogsDao(ConnectionProvider.main());
-			ArrayList<Blogs> AllBlogs = dao.getAllPost(start, amount);
+			ArrayList<Blogs> AllBlogs = dao.getAllPost(categoryId,start, amount);
 			CategoriesDao catDao = new CategoriesDao(ConnectionProvider.main());
+			if(AllBlogs.size()==0)out.print("<h2>No Post Found</h2>");
 			for (Blogs b : AllBlogs) {
 			%>
 
@@ -103,23 +106,23 @@
 				<li
 					class="page-item <%if (pageNo == 0)
 	out.print("active disabled");%>"><a
-					class="page-link" href="?page=<%=pageNo%>" tabindex="-1">Previous</a></li>
+					class="page-link" href="?page=<%=pageNo%>&category=<%=categoryId%>" tabindex="-1">Previous</a></li>
 				<%
-				int count = dao.countPost();
+				int count = dao.countPostOfCategory(categoryId);
 				for (int i = 1; i <= Math.ceil((float) count / amount); i++) {
 				%>
 
 				<li class="page-item"><a
 					class="page-link <%if (pageNo == i - 1)
 	out.print("active disabled");%>"
-					href="?page=<%=i%>"><%=i%></a></li>
+					href="?page=<%=i%>&category=<%=categoryId%>"><%=i%></a></li>
 				<%
 				}
 				%>
 				<li
 					class="page-item <%if (pageNo + 1 == (int) Math.ceil((float) count / amount))
 	out.print("active disabled");%>"><a
-					class="page-link" href="?page=<%=pageNo + 2%>">Next</a></li>
+					class="page-link" href="?page=<%=pageNo + 2%>&category=<%=categoryId%>">Next</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -132,6 +135,10 @@
 		%>
 	</p>
 </body>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+	crossorigin="anonymous"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
 	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
