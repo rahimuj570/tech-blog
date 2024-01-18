@@ -109,14 +109,5 @@
     <servlet-name>AddLikesServlet</servlet-name>
     <url-pattern>/AddLikesServlet</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>CheckMyLike</display-name>
-    <servlet-name>CheckMyLike</servlet-name>
-    <servlet-class>servlets.CheckMyLike</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>CheckMyLike</servlet-name>
-    <url-pattern>/CheckMyLike</url-pattern>
-  </servlet-mapping>
+
 </web-app>

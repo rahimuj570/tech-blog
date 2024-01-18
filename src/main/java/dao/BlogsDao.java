@@ -90,6 +90,24 @@ public class BlogsDao {
 		}
 		return count;
 	}
+	
+	
+	public int countPostOfSearch(String search) {
+		int count = 0;
+		String query = null;
+			query = "select count(*) as count from blogs where blog_title like ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+				pst.setString(1, "%"+search+"%");
+			ResultSet res = pst.executeQuery();
+			if (res.next()) {
+				count = res.getInt("count");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return count;
+	}
 
 	public ArrayList<Blogs> getAllPost(int catId, int start, int amount) {
 		String query = null;
@@ -152,6 +170,33 @@ public class BlogsDao {
 			System.out.println(e);
 		}
 
+		return entities;
+	}
+	
+	public ArrayList<Blogs> getPostBySearch(String search, int start, int amount) {
+		String query = "select * from blogs where blog_title like ? limit ?,?";
+		ArrayList<Blogs> entities = new ArrayList<Blogs>();
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, "%"+search+"%");
+			pst.setInt(2, start);
+			pst.setInt(3, amount);
+			ResultSet res = pst.executeQuery();
+			while (res.next()) {
+				String title = res.getString("blog_title");
+				String content = res.getString("blog_content");
+				int blog_id = res.getInt("blog_id");
+				int blog_category = res.getInt("blog_category");
+				int author = res.getInt("blog_author");
+				String comment_status = res.getString("blog_comment_status");
+				Timestamp blog_date = res.getTimestamp("blog_date");
+				Blogs entity = new Blogs(blog_id, title, content, blog_category, author, blog_date, comment_status);
+				entities.add(entity);
+			}
+		} catch (SQLException e) {
+			System.out.println(e+"ssssssss");
+		}
+		
 		return entities;
 	}
 

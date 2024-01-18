@@ -1,22 +1,31 @@
-
-<%@page import="dao.CommentsDao"%>
-<%@page import="java.sql.Timestamp"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="dao.CategoriesDao"%>
 <%@page import="entities.Blogs"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="dao.BlogsDao"%>
-<%@page import="helper.ConnectionProvider"%>
+<%@page import="dao.CommentsDao"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*"%>
-<%@page import="java.time.Year"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>TechBlog</title>
+<%
+int start = 0;
+int pageNo = 0;
+int amount=3;
+if (request.getParameter("page") != null) {
+	pageNo = Integer.parseInt(request.getParameter("page")) - 1;
+}
+start = pageNo * 3;
+String search=request.getParameter("search");
+int categoryId=0;
+BlogsDao dao = new BlogsDao(ConnectionProvider.main());
+CategoriesDao catDao = new CategoriesDao(ConnectionProvider.main());
+ArrayList<Blogs> AllBlogs = dao.getPostBySearch(search,start,amount);
+int count=dao.countPostOfSearch(search);
+
+%>
+<title><%=search %> - <%=count %></title>
 <link rel='stylesheet'
 	href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' />
 <script src="https://kit.fontawesome.com/fa8c3d741e.js"
@@ -24,25 +33,16 @@
 </head>
 <body>
 	<%@include file="navbar.jsp"%>
-
+	
+	
 	<div class="container">
+	<h3 class="mt-2">Result for "<%=search %>" Found : <%=count %></h3>
 		<div class="row gap-3 justify-content-center mt-4">
 
 
-			<%!int amount = 3;%>
+
 			<%
-			int categoryId=0;
-			if(request.getParameter("category")!=null)categoryId=Integer.parseInt(request.getParameter("category"));
-			int start = 0;
-			int pageNo = 0;
-			if (request.getParameter("page") != null) {
-				pageNo = Integer.parseInt(request.getParameter("page")) - 1;
-			}
-			start = pageNo * 3;
 			CommentsDao commentsDao=new CommentsDao(ConnectionProvider.main());
-			BlogsDao dao = new BlogsDao(ConnectionProvider.main());
-			ArrayList<Blogs> AllBlogs = dao.getAllPost(categoryId,start, amount);
-			CategoriesDao catDao = new CategoriesDao(ConnectionProvider.main());
 			if(AllBlogs.size()==0)out.print("<h2>No Post Found</h2>");
 			for (Blogs b : AllBlogs) {
 			%>
@@ -108,34 +108,27 @@
 				<li
 					class="page-item <%if (pageNo == 0)
 	out.print("active disabled");%>"><a
-					class="page-link" href="?page=<%=pageNo%>&category=<%=categoryId%>" tabindex="-1">Previous</a></li>
+					class="page-link" href="?page=<%=pageNo%>&search=<%=search%>" tabindex="-1">Previous</a></li>
 				<%
-				int count = dao.countPostOfCategory(categoryId);
 				for (int i = 1; i <= Math.ceil((float) count / amount); i++) {
 				%>
 
 				<li class="page-item"><a
 					class="page-link <%if (pageNo == i - 1)
 	out.print("active disabled");%>"
-					href="?page=<%=i%>&category=<%=categoryId%>"><%=i%></a></li>
+					href="?page=<%=i%>&search=<%=search%>"><%=i%></a></li>
 				<%
 				}
 				%>
 				<li
 					class="page-item <%if (pageNo + 1 == (int) Math.ceil((float) count / amount))
 	out.print("active disabled");%>"><a
-					class="page-link" href="?page=<%=pageNo + 2%>&category=<%=categoryId%>">Next</a></li>
+					class="page-link" href="?page=<%=pageNo + 2%>&search=<%=search%>">Next</a></li>
 			</ul>
 		</nav>
 	</div>
-
-	<p
-	"
-		class="w-full bg-primary text-center text-white">
-		&copy;<%
-		out.print(Year.now());
-		%>
-	</p>
+	
+	
 </body>
 <script
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -145,6 +138,4 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
 	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
 	crossorigin="anonymous"></script>
-
-
 </html>
