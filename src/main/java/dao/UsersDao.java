@@ -65,7 +65,7 @@ public class UsersDao {
 	}
 	public Users getUserPublicById(int id) {
 		Users user = null;
-		String query = "select user_id, user_name, user_dp from users where user_id=?";
+		String query = "select user_id, user_name, user_about, user_gender, user_email, registration_date, user_dp from users where user_id=?";
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
 			pst.setInt(1, id);
@@ -76,6 +76,10 @@ public class UsersDao {
 					user.setUser_name(res.getString("user_name"));
 					user.setUser_id(res.getInt("user_id"));
 					user.setUser_dp(res.getString("user_dp"));
+					user.setUser_about(res.getString("user_about"));
+					user.setUser_email(res.getString("user_email"));
+					user.setUser_gender(res.getString("user_gender"));
+					user.setRegistration_date(res.getTimestamp("registration_date"));
 				} catch (Exception e) {
 					System.out.println(e);
 				}

@@ -37,12 +37,12 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 			<p class="card-text"><%=single_blog.getBlog_content()%></p>
 			<p class="card-text">
 				<small>Posted on <%=single_blog.getBlog_date()%><br />Posted
-					by <%
+					by <a href="profile.jsp?user=<%=single_blog.getBlog_author()%>"><%
 				CommentsDao dao = new CommentsDao(ConnectionProvider.main());
 				UsersDao udao = new UsersDao(ConnectionProvider.main());
 				Users u = udao.getUserPublicById(single_blog.getBlog_author());
 				out.print(u.getUser_name());
-				%></small>
+				%></a></small>
 			</p>
 			<div class="d-flex gap-3">
 				<p>
@@ -83,23 +83,23 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									<%
 									if (user.getUser_dp().isBlank()) {
 									%>
-									<img src="https://robohash.org/<%=user.getUser_name()%>>"
+									<a class="link text-decoration-none" href="profile.jsp?user=<%=c.getUser_id()%>"><img src="https://robohash.org/<%=user.getUser_name()%>>"
 										alt="avatar" width="60" height="60"
-										class="rounded-circle shadow-1-strong me-3">
+										class="rounded-circle shadow-1-strong me-3"></a>
 									<%
 									} else {
 									%>
-									<img
+									<a class="link text-decoration-none" href="profile.jsp?user=<%=c.getUser_id()%>"><img
 										src="<%out.print("/" + "TechBlog/" + user.getUser_dp());%>"
 										alt="avatar" width="60" height="60"
-										class="rounded-circle shadow-1-strong me-3">
+										class="rounded-circle shadow-1-strong me-3"></a>
 
 									<%
 									}
 									%>
 
 									<div>
-										<h6 class="fw-bold text-primary mb-1"><%=user.getUser_name()%></h6>
+										<h6 class="fw-bold text-primary mb-1"><a class="link text-decoration-none" href="profile.jsp?user=<%=c.getUser_id()%>"><%=user.getUser_name()%></a></h6>
 										<p class="text-muted small mb-0">
 											Shared publicly -
 											<%=c.getComment_date()%>

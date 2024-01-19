@@ -1,3 +1,4 @@
+<%@page import="dao.UsersDao"%>
 <%@page import="dao.LikesDao"%>
 <%@page import="dao.CommentsDao"%>
 <%@page import="dao.CategoriesDao"%>
@@ -12,7 +13,12 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%
-Users u = (Users) session.getAttribute("current_user");
+Users u =new Users(); 
+if(request.getParameter("user")==null){
+u=(Users) session.getAttribute("current_user");
+}else{
+	u=new UsersDao(ConnectionProvider.main()).getUserPublicById(Integer.parseInt(request.getParameter("user")));
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -44,6 +50,11 @@ Users u = (Users) session.getAttribute("current_user");
 	<section class="h-100 gradient-custom-2">
 		<div class="container py-5 h-100">
 			<%
+			boolean authorized=false;
+			if(u2.getUser_id()==u.getUser_id()){
+				authorized=true;
+			}
+			
 			if (session.getAttribute("update_fail") != null) {
 			%>
 			<div class="alert alert-danger" role="alert">Update Failed! <br/> <%=session.getAttribute("update_fail")%></div>
@@ -78,11 +89,12 @@ Users u = (Users) session.getAttribute("current_user");
 
 								<%
 								}
+								if(authorized){
 								%>
 								<button data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-bs-whatever="@mdo" type="button"
 									class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-									style="z-index: 1;">Edit profile</button>
+									style="z-index: 1;">Edit profile</button><%} %>
 							</div>
 							<div class="ms-3" style="margin-top: 50px;">
 								<h5>
@@ -217,7 +229,7 @@ Users u = (Users) session.getAttribute("current_user");
 
 
 
-
+<%if(authorized){ %>
 
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -278,7 +290,7 @@ Users u = (Users) session.getAttribute("current_user");
 					</div>
 				</div>
 			</div>
-		</div>
+		</div><%} %>
 
 	</section>
 </body>
