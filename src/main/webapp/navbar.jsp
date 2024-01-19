@@ -33,8 +33,6 @@
 						<li><hr class="dropdown-divider"></li>
 						<li><a class="dropdown-item" href="/TechBlog">All Posts</a></li>
 					</ul></li>
-				<li class="nav-item"><a class="nav-link" href="#">Contact
-						Us</a></li>
 				<%if(u2==null){
 					out.print("<li class=\"nav-item\"><a class=\"nav-link\" href=\"login.jsp\">Log in</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"register.jsp\">Register</a></li>");
 					

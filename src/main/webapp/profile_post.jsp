@@ -31,7 +31,10 @@ for (Blogs b : allBlogs) {
 			</div>
 		</div>
 		<div class="card-body">
-			<h5 class="card-title fs-3"><%=b.getBlog_title()%></h5>
+			<h5 class="card-title fs-3">
+				<a class="link text-decoration-none"
+					href="single_post.jsp?post_id=<%=b.getBlog_id()%>"><%=b.getBlog_title()%></a>
+			</h5>
 			<div class="d-flex justify-content-between">
 				<p>
 					<i class="fa-solid fa-calendar-days"></i> <span class="fs-6">

@@ -13,11 +13,11 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%
-Users u =new Users(); 
-if(request.getParameter("user")==null){
-u=(Users) session.getAttribute("current_user");
-}else{
-	u=new UsersDao(ConnectionProvider.main()).getUserPublicById(Integer.parseInt(request.getParameter("user")));
+Users u = new Users();
+if (request.getParameter("user") == null) {
+	u = (Users) session.getAttribute("current_user");
+} else {
+	u = new UsersDao(ConnectionProvider.main()).getUserPublicById(Integer.parseInt(request.getParameter("user")));
 }
 %>
 <!DOCTYPE html>
@@ -50,14 +50,16 @@ u=(Users) session.getAttribute("current_user");
 	<section class="h-100 gradient-custom-2">
 		<div class="container py-5 h-100">
 			<%
-			boolean authorized=false;
-			if(u2.getUser_id()==u.getUser_id()){
-				authorized=true;
+			boolean authorized = false;
+			if (u2.getUser_id() == u.getUser_id()) {
+				authorized = true;
 			}
-			
+
 			if (session.getAttribute("update_fail") != null) {
 			%>
-			<div class="alert alert-danger" role="alert">Update Failed! <br/> <%=session.getAttribute("update_fail")%></div>
+			<div class="alert alert-danger" role="alert">
+				Update Failed! <br />
+				<%=session.getAttribute("update_fail")%></div>
 			<%
 			}
 			%>
@@ -89,12 +91,15 @@ u=(Users) session.getAttribute("current_user");
 
 								<%
 								}
-								if(authorized){
+								if (authorized) {
 								%>
 								<button data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-bs-whatever="@mdo" type="button"
 									class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-									style="z-index: 1;">Edit profile</button><%} %>
+									style="z-index: 1;">Edit profile</button>
+								<%
+								}
+								%>
 							</div>
 							<div class="ms-3" style="margin-top: 50px;">
 								<h5>
@@ -122,12 +127,12 @@ u=(Users) session.getAttribute("current_user");
 								</p>
 							</div>
 						</div>
-						
+
 						<%
 						BlogsDao dao = new BlogsDao(ConnectionProvider.main());
-						LikesDao likeDao=new LikesDao(ConnectionProvider.main());
+						LikesDao likeDao = new LikesDao(ConnectionProvider.main());
 						%>
-						
+
 						<div class="p-4 text-black" style="background-color: #f8f9fa;">
 							<div class="d-flex justify-content-end text-center py-1">
 								<div>
@@ -135,7 +140,7 @@ u=(Users) session.getAttribute("current_user");
 									<p class="small text-muted mb-0">Posts</p>
 								</div>
 								<div class="px-3">
-									<p class="mb-1 h5"><%=likeDao.countLikesOfUser(u.getUser_id()) %></p>
+									<p class="mb-1 h5"><%=likeDao.countLikesOfUser(u.getUser_id())%></p>
 									<p class="small text-muted mb-0">Likes</p>
 								</div>
 							</div>
@@ -158,8 +163,7 @@ u=(Users) session.getAttribute("current_user");
 							<div id="my_post_container" class="row g-2">
 
 								<%
-								
-								CommentsDao commentsDao=new CommentsDao(ConnectionProvider.main());
+								CommentsDao commentsDao = new CommentsDao(ConnectionProvider.main());
 								int start = 0;
 								int amount = 3;
 								ArrayList<Blogs> allBlogs = dao.getPostByUserId(u.getUser_id(), start, amount);
@@ -177,7 +181,10 @@ u=(Users) session.getAttribute("current_user");
 											</div>
 										</div>
 										<div class="card-body">
-											<h5 class="card-title fs-3"><a class="link text-decoration-none" href="single_post.jsp?post_id=<%=b.getBlog_id()%>"><%=b.getBlog_title()%></a></h5>
+											<h5 class="card-title fs-3">
+												<a class="link text-decoration-none"
+													href="single_post.jsp?post_id=<%=b.getBlog_id()%>"><%=b.getBlog_title()%></a>
+											</h5>
 											<div class="d-flex justify-content-between">
 												<p>
 													<i class="fa-solid fa-calendar-days"></i> <span
@@ -229,7 +236,9 @@ u=(Users) session.getAttribute("current_user");
 
 
 
-<%if(authorized){ %>
+		<%
+		if (authorized) {
+		%>
 
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -290,7 +299,10 @@ u=(Users) session.getAttribute("current_user");
 					</div>
 				</div>
 			</div>
-		</div><%} %>
+		</div>
+		<%
+		}
+		%>
 
 	</section>
 </body>

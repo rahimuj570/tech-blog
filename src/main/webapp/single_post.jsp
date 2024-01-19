@@ -13,7 +13,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <%
-LikesDao likesDao=new LikesDao(ConnectionProvider.main());
+LikesDao likesDao = new LikesDao(ConnectionProvider.main());
 int post_id = Integer.parseInt(request.getParameter("post_id"));
 BlogsDao singleBlogDao = new BlogsDao(ConnectionProvider.main());
 Blogs single_blog = singleBlogDao.getSinglePost(post_id);
@@ -37,24 +37,27 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 			<p class="card-text"><%=single_blog.getBlog_content()%></p>
 			<p class="card-text">
 				<small>Posted on <%=single_blog.getBlog_date()%><br />Posted
-					by <a href="profile.jsp?user=<%=single_blog.getBlog_author()%>"><%
-				CommentsDao dao = new CommentsDao(ConnectionProvider.main());
-				UsersDao udao = new UsersDao(ConnectionProvider.main());
-				Users u = udao.getUserPublicById(single_blog.getBlog_author());
-				out.print(u.getUser_name());
-				%></a></small>
+					by <a href="profile.jsp?user=<%=single_blog.getBlog_author()%>">
+						<%
+						CommentsDao dao = new CommentsDao(ConnectionProvider.main());
+						UsersDao udao = new UsersDao(ConnectionProvider.main());
+						Users u = udao.getUserPublicById(single_blog.getBlog_author());
+						out.print(u.getUser_name());
+						%>
+				</a></small>
 			</p>
 			<div class="d-flex gap-3">
 				<p>
 
 					<%
-				int isLiked=0;
-				int likeCount=likesDao.countLikesOfBlog(single_blog.getBlog_id());
-				if(u2!=null)isLiked=likesDao.myLikeStatus(u2.getUser_id(), single_blog.getBlog_id());
-				%>
+					int isLiked = 0;
+					int likeCount = likesDao.countLikesOfBlog(single_blog.getBlog_id());
+					if (u2 != null)
+						isLiked = likesDao.myLikeStatus(u2.getUser_id(), single_blog.getBlog_id());
+					%>
 					<i id="like_btn"
-						class="fa-regular <%=isLiked==0?"fa-thumbs-up":"fa-thumbs-down" %>"></i>
-					<span id="like_count"><%=likeCount %></span>
+						class="fa-regular <%=isLiked == 0 ? "fa-thumbs-up" : "fa-thumbs-down"%>"></i>
+					<span id="like_count"><%=likeCount%></span>
 				</p>
 				<p>
 					<i class="fa-regular fa-comment"></i>
@@ -83,13 +86,16 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									<%
 									if (user.getUser_dp().isBlank()) {
 									%>
-									<a class="link text-decoration-none" href="profile.jsp?user=<%=c.getUser_id()%>"><img src="https://robohash.org/<%=user.getUser_name()%>>"
+									<a class="link text-decoration-none"
+										href="profile.jsp?user=<%=c.getUser_id()%>"><img
+										src="https://robohash.org/<%=user.getUser_name()%>>"
 										alt="avatar" width="60" height="60"
 										class="rounded-circle shadow-1-strong me-3"></a>
 									<%
 									} else {
 									%>
-									<a class="link text-decoration-none" href="profile.jsp?user=<%=c.getUser_id()%>"><img
+									<a class="link text-decoration-none"
+										href="profile.jsp?user=<%=c.getUser_id()%>"><img
 										src="<%out.print("/" + "TechBlog/" + user.getUser_dp());%>"
 										alt="avatar" width="60" height="60"
 										class="rounded-circle shadow-1-strong me-3"></a>
@@ -99,7 +105,10 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 									%>
 
 									<div>
-										<h6 class="fw-bold text-primary mb-1"><a class="link text-decoration-none" href="profile.jsp?user=<%=c.getUser_id()%>"><%=user.getUser_name()%></a></h6>
+										<h6 class="fw-bold text-primary mb-1">
+											<a class="link text-decoration-none"
+												href="profile.jsp?user=<%=c.getUser_id()%>"><%=user.getUser_name()%></a>
+										</h6>
 										<p class="text-muted small mb-0">
 											Shared publicly -
 											<%=c.getComment_date()%>
@@ -138,7 +147,7 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 
 									<%
 									}
-									if(single_blog.getBlog_comment_status().equals("true")){
+									if (single_blog.getBlog_comment_status().equals("true")) {
 									%>
 									<form action="CommentsServlet" method="post"
 										class="form-outline w-100">
@@ -153,7 +162,10 @@ Blogs single_blog = singleBlogDao.getSinglePost(post_id);
 												type="button" class="btn btn-outline-primary btn-sm">Clear</button>
 										</div>
 									</form>
-									<%}else out.print("<h3>Comment is not allowed for this post</h3>"); %>
+									<%
+									} else
+									out.print("<h3>Comment is not allowed for this post</h3>");
+									%>
 								</div>
 							</div>
 							<%
